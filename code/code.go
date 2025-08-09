@@ -24,6 +24,9 @@ const (
 	OpGreaterThan
 	OpMinus
 	OpBang
+	OpJumpNotTruthy
+	OpJump
+	OpNull
 )
 
 type Definition struct {
@@ -32,19 +35,22 @@ type Definition struct {
 }
 
 var definition = map[Opcode]*Definition{
-	OpConstant:    {Name: "OpConstant", OperandWidths: []int{2}},
-	OpAdd:         {Name: "OpAdd", OperandWidths: []int{}},
-	OpPop:         {Name: "OpPop", OperandWidths: []int{}},
-	OpSub:         {Name: "OpSub", OperandWidths: []int{}},
-	OpMul:         {Name: "OpMul", OperandWidths: []int{}},
-	OpDiv:         {Name: "OpDiv", OperandWidths: []int{}},
-	OpTrue:        {Name: "OpTrue", OperandWidths: []int{}},
-	OpFalse:       {Name: "OpFalse", OperandWidths: []int{}},
-	OpEqual:       {Name: "OpEqual", OperandWidths: []int{}},
-	OpNotEqual:    {Name: "OpNotEqual", OperandWidths: []int{}},
-	OpGreaterThan: {Name: "OpGreaterThan", OperandWidths: []int{}},
-	OpMinus:       {Name: "OpMinus", OperandWidths: []int{}},
-	OpBang:        {Name: "OpBang", OperandWidths: []int{}},
+	OpConstant:      {Name: "OpConstant", OperandWidths: []int{2}},
+	OpAdd:           {Name: "OpAdd", OperandWidths: []int{}},
+	OpPop:           {Name: "OpPop", OperandWidths: []int{}},
+	OpSub:           {Name: "OpSub", OperandWidths: []int{}},
+	OpMul:           {Name: "OpMul", OperandWidths: []int{}},
+	OpDiv:           {Name: "OpDiv", OperandWidths: []int{}},
+	OpTrue:          {Name: "OpTrue", OperandWidths: []int{}},
+	OpFalse:         {Name: "OpFalse", OperandWidths: []int{}},
+	OpEqual:         {Name: "OpEqual", OperandWidths: []int{}},
+	OpNotEqual:      {Name: "OpNotEqual", OperandWidths: []int{}},
+	OpGreaterThan:   {Name: "OpGreaterThan", OperandWidths: []int{}},
+	OpMinus:         {Name: "OpMinus", OperandWidths: []int{}},
+	OpBang:          {Name: "OpBang", OperandWidths: []int{}},
+	OpJumpNotTruthy: {Name: "OpJumpNotTruthy", OperandWidths: []int{2}},
+	OpJump:          {Name: "OpJump", OperandWidths: []int{2}},
+	OpNull:          {Name: "OpNull", OperandWidths: []int{}},
 }
 
 func Lookup(op byte) (*Definition, error) {
