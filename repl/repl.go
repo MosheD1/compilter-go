@@ -44,7 +44,10 @@ func Start(in io.Reader, out io.Writer) {
 			continue
 		}
 
-		machine := vm.NewWithGlobalStore(comp.Bytecode(), globals)
+		code := comp.Bytecode()
+		constants = code.Constants
+
+		machine := vm.NewWithGlobalStore(code, globals)
 		err = machine.Run()
 		if err != nil {
 			fmt.Fprintf(out, "Woops! Execution bytecode failed: \n %s \n", err)
