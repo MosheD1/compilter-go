@@ -38,6 +38,7 @@ const (
 	OpGetLocal
 	OpSetLocal
 	OpGetBuiltin
+	OpClosure
 )
 
 type Definition struct {
@@ -73,6 +74,7 @@ var definition = map[Opcode]*Definition{
 	OpGetLocal:      {Name: "OpGetLocal", OperandWidths: []int{1}},
 	OpSetLocal:      {Name: "OpSetLocal", OperandWidths: []int{1}},
 	OpGetBuiltin:    {Name: "OpGetBuiltin", OperandWidths: []int{1}},
+	OpClosure:       {Name: "OpClosure", OperandWidths: []int{2, 1}},
 }
 
 func Lookup(op byte) (*Definition, error) {
@@ -148,6 +150,8 @@ func (ins Instructions) fmtInstruction(def *Definition, operands []int) string {
 		return def.Name
 	case 1:
 		return fmt.Sprintf("%s %d", def.Name, operands[0])
+	case 2:
+		return fmt.Sprintf("%s %d %d", def.Name, operands[0], operands[1])
 	}
 	return fmt.Sprintf("ERROR: unhandled operandCount for %s\n", def.Name)
 }
@@ -164,7 +168,7 @@ func ReadOperands(def *Definition, ins Instructions) ([]int, int) {
 			operands[i] = int(ReadUint8(ins))
 		}
 
-		offset += offset + width
+		offset = offset + width
 	}
 
 	return operands, offset
